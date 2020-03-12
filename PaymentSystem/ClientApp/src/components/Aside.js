@@ -1,13 +1,14 @@
 ﻿import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 
 export class Aside extends Component {
     static displayName = Aside.name;
 
     constructor(props) {
-        super(props);
+        super(props)
     }
+
 
     render() {
         return (
@@ -29,45 +30,45 @@ export class Aside extends Component {
 
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li class="nav-item">
-                                <Link to="/" class="nav-link">
-                                    <i class="nav-icon fas fa-home"></i>
-                                    <p>Главная</p>
-                                </Link>
-                            </li>
                             <li class="nav-header">Авторизация в системе</li>
                             <li class="nav-item">
-                                <Link to="/sign-up" class="nav-link">
-                                    <i class="nav-icon fas fa-user-plus"></i>
-                                    <p>Регистрация</p>
-                                </Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link to="/sign-in" class="nav-link">
+                                <NavLink to="/sign-in" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-sign-in-alt"></i>
                                     <p>Войти</p>
-                                </Link>
+                                </NavLink>
                             </li>
-                            <li class="nav-header">Разделы</li>
                             <li class="nav-item">
+                                <NavLink to="/sign-up" className="nav-link" activeClassName="active">
+                                    <i class="nav-icon fas fa-user-plus"></i>
+                                    <p>Регистрация</p>
+                                </NavLink>
+                            </li> 
+                            <li class="nav-item">
+                                <NavLink to="/password-recovery" className="nav-link" activeClassName="active">
+                                    <i class="nav-icon fas fa-unlock"></i>
+                                    <p>Восстановить пароль</p>
+                                </NavLink>
+                            </li>
+                            <li class="nav-header d-none">Разделы</li>
+                            <li class="nav-item d-none">
                                 <Link to="/" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>Заявки</p>
                                 </Link>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item d-none">
                                 <Link to="/" class="nav-link">
                                     <i class="nav-icon fas fa-donate"></i>
                                     <p>Платёжи</p>
                                 </Link>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item d-none">
                                 <Link to="/" class="nav-link">
                                     <i class="nav-icon fas fa-hand-holding-usd"></i>
                                     <p>Автоплатёжи</p>
                                 </Link>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item d-none">
                                 <Link to="/" class="nav-link">
                                     <i class="nav-icon fas fa-landmark"></i>
                                     <p>Истории</p>

@@ -9,7 +9,7 @@ export class signUp extends Component {
             <div class="register-page" style={{ minHeight: '800px'}}>
                 <div class="register-box">
                     <div class="register-logo">
-                        <Link to="/"><b>Регистрация</b></Link>
+                        <b>Регистрация</b>
                     </div> 
                     <div class="card">
                     <div class="card-body register-card-body">
@@ -87,7 +87,7 @@ export class signUp extends Component {
                         </form> 
                         <div class="social-auth-links text-center"> 
                         </div> 
-                        <Link to="/sign-in" class="text-center">У меня уже есть аккаунт</Link>
+                        <Link to="/sign-in" class="text-center d-block">У меня уже есть аккаунт</Link>
                     </div> 
                     </div> 
                 </div>
