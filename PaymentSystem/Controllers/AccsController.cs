@@ -9,7 +9,7 @@ using PaymentSystem.Models;
 
 namespace PaymentSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("accounts")]
     [ApiController]
     public class AccsController : ControllerBase
     {
@@ -22,14 +22,37 @@ namespace PaymentSystem.Controllers
 
         // GET: api/Accs
         [HttpGet]
+        [Route("all")]
         public async Task<ActionResult<IEnumerable<Acc>>> GetAcc()
         {
-            return await _context.Acc.ToListAsync();
+            return await _context.Acc
+                .Include(x => x.client_)
+                .Include(x => x.credit_rate_)
+                .Include(x => x.status_acc_)
+                .Include(x => x.type_acc_).ToListAsync();
+        }
+
+        [HttpGet]
+        [Route("my")]
+        public async Task<ActionResult<IEnumerable<Acc>>> GetAcc([FromHeader] string api_token)
+        {
+            AuthController newAuth = new AuthController(_context);                          
+            var ActionResult = await newAuth.getId(api_token);
+            var OkObjectResult = ActionResult as OkObjectResult;
+
+
+            return await _context.Acc
+                .Include(x => x.client_)
+                .Include(x => x.credit_rate_)
+                .Include(x => x.status_acc_)
+                .Include(x => x.type_acc_)
+                .Where(x => x.client_id == (int)OkObjectResult.Value)
+                .ToListAsync();
         }
 
         // GET: api/Accs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Acc>> GetAcc(int id)
+        public async Task<ActionResult<Acc>> GetOneAcc(int id)
         {
             var acc = await _context.Acc.FindAsync(id);
 
