@@ -9,7 +9,7 @@ export class signIn extends Component {
             <div class="register-page" style={{ minHeight: '600px'}}>
                 <div class="register-box">
                     <div class="register-logo">
-                        <Link to="/"><b>Авторизация</b></Link>
+                        <b>Авторизация</b>
                     </div> 
                     <div class="card">
                     <div class="card-body register-card-body">
@@ -40,7 +40,7 @@ export class signIn extends Component {
                         <div class="social-auth-links text-center"> 
                         </div> 
                         <Link to="/sign-up" class="text-center d-block">Зарегистрировать новый аккаунт</Link>
-                        <Link to="/" class="text-center d-block">Я забыл пароль</Link>
+                        <Link to="/password-recovery" class="text-center d-block">Я забыл пароль</Link>
                     </div> 
                     </div> 
                 </div>

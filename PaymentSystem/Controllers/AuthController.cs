@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using PaymentSystem.Models;
 using MimeKit;
 using MailKit.Net.Smtp;
-
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 
 namespace PaymentSystem.Controllers
@@ -43,11 +45,55 @@ namespace PaymentSystem.Controllers
             {
                 return NotFound("Пользователь с данным логином и паролем отсутствует");
             }
-            else if (user != null && user.verification == false)
+            //else if (user != null && user.verification == false)
+            //{
+            //    return NotFound("Для входа в систему надо активировать почту");
+            //}
+            var identity = GetIdentity(email, password);
+            if (identity == null)
             {
-                return NotFound("Для входа в систему надо активировать почту");
+                return BadRequest(new { errorText = "Недопустимые данные" });
             }
-            return Ok(user);
+
+            var now = DateTime.UtcNow;
+            // создаем JWT-токен
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                fio = identity.FindFirst("fio").Value,
+                email = identity.FindFirst("email").Value,
+            };
+            return Ok(response);
+        }
+        private ClaimsIdentity GetIdentity(string username, string password)
+        {
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            string hashPassword = Convert.ToBase64String(hash);
+            client client = _context.client.FirstOrDefault(x => x.email == username && x.password == hashPassword);
+            if (client != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim("id", client.id_client.ToString()),
+                    new Claim("email", client.email),
+                    new Claim("fio", client.fio)
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+            return null;
         }
         [HttpPost("reg")]
         public async Task<IActionResult> Reg([FromBody] client client)
@@ -63,9 +109,9 @@ namespace PaymentSystem.Controllers
                 string hashPassword = Convert.ToBase64String(hash);
                 client.password = hashPassword;
                 client.verification = false;
-                
+
                 _context.client.Add(client);
-                await SendEmailAsync(client.email,client.id_client);
+                //await SendEmailAsync(client.email,client.id_client);
                 await _context.SaveChangesAsync();
                 return Ok(client);
             }
@@ -99,10 +145,6 @@ namespace PaymentSystem.Controllers
                 return false;
             return true;
         }
-        private void SendMail(string email,string message)
-        {
-            
-        }
         // GET: api/Auth/confirmEmail?id=1
         [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(int id)
@@ -122,6 +164,24 @@ namespace PaymentSystem.Controllers
                 return Ok(client);
             }
             return NotFound("Данный пользователь уже подтвердил почту");
+        }
+        [HttpGet("getId")]
+        public async Task<IActionResult> getId(string token)
+        {
+            int id = getIdFromToken(token);
+            var client = await _context.client.FindAsync(id);
+            if (client==null)
+            {
+                return NotFound("Такого пользователя нет в бд");
+            }
+            return Ok(client.id_client);
+        } 
+        private protected int getIdFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+            int id = int.Parse(tokenS.Claims.First(claim => claim.Type == "id").Value);
+            return id;
         }
     }
 }

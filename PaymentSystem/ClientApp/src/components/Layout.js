@@ -12,7 +12,7 @@ export class Layout extends Component {
         <NavMenu />
         <Aside/> 
         {this.props.children}
-       <footer class="main-footer">
+      <footer class="main-footer">
         <strong>Платежная Система | 2020</strong>  Все права защищены.
         <div class="float-right d-none d-sm-inline-block">
           <b>Версия</b> 1.0

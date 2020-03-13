@@ -4,6 +4,14 @@ import { Link } from 'react-router-dom';
 export class Home extends Component {
     static displayName = Home.name;
 
+    constructor(props) {
+        super(props)
+    }
+
+    componentWillMount() {
+        //alert(JSON.stringify(this.props))
+    }
+
     render() {
         return (
             <div class="content-wrapper" style={{ minHeight: '846.563px'}}> 
