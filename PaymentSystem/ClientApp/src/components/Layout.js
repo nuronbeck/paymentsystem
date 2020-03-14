@@ -9,7 +9,7 @@ export class Layout extends Component {
   render () {
     return (
       <div class="wrapper">
-        <NavMenu />
+        { false ? <NavMenu/> : null}
         <Aside/> 
         {this.props.children}
       <footer class="main-footer">
