@@ -6,10 +6,30 @@ export class Home extends Component {
 
     constructor(props) {
         super(props)
+        let loggedIn = true
+
+        this.state = {
+            loggedIn,
+            user: []
+        }
+
+        const user = localStorage.getItem('access_token')
+        if (user == null) {
+            this.state.loggedIn = false 
+        }
     }
+
 
     componentWillMount() {
         //alert(JSON.stringify(this.props))
+        if (!this.state.loggedIn) { this.props.history.push('/sign-in') }
+        this.setState({
+            user: JSON.parse(localStorage.getItem("user"))
+        }) 
+    }
+
+    componentDidUpdate() {
+        console.log(this.state.user)
     }
 
     render() {
@@ -37,18 +57,18 @@ export class Home extends Component {
                             <div class="col-md-4"> 
                                 <div class="card card-widget widget-user"> 
                                   <div class="widget-user-header bg-info">
-                                    <h3 class="widget-user-username">Иванов Иван</h3>
+                                    <h3 class="widget-user-username">{ this.state.user.fio }</h3>
                                     <h5 class="widget-user-desc">Верифицирован</h5>
                                   </div>
                                   <div class="widget-user-image">
-                                    <img class="img-circle elevation-2" src="../dist/img/user1-128x128.jpg" alt="User Avatar"/>
+                                    <img class="img-circle elevation-2" src="../dist/img/user1-128x128.webp" alt="User Avatar"/>
                                   </div>
                                   <div class="card-footer">
                                     <div class="row">
                                       <div class="col-sm-12 col-md-12 col-lg-12 border-right">
                                         <div class="description-block">
                                           <h5 class="description-header">Почта</h5>
-                                          <span class="description-text">your@example.com</span>
+                                          <span class="description-text">{ this.state.user.email }</span>
                                         </div> 
                                       </div> 
                                       <div class="col-sm-12 col-md-12 col-lg-12 border-right">

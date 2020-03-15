@@ -6,9 +6,11 @@ export class signUp extends Component {
 
     constructor(props) {
         super(props)
+        let loggedIn = true
 
         this.state =
         {
+            loggedIn,
             fio: '',
             email: '',
             password: '',
@@ -22,24 +24,22 @@ export class signUp extends Component {
             userIssetInServerDB: false
         }
 
+        const user = localStorage.getItem('access_token')
+        if (user == null) {
+            this.state.loggedIn = false
+        }
+
         this.onChange = this.onChange.bind(this)
         this.agreementClick = this.agreementClick.bind(this)
         this.checkAvailableSubmitForm = this.checkAvailableSubmitForm.bind(this)
         this.createNewUser = this.createNewUser.bind(this)
     }
 
-    //componentDidMount() {
-    //    this.setState({
-    //        fio: 'Ismoilov Nurbek',
-    //        email: 'test_noreck77@mail.ru',
-    //        password: 'Aa1234567890',
-    //        repassword: 'Aa1234567890',
-    //        phone: 79697776699,
-    //        passport_s: '111',
-    //        passport_n: '222222222',
-    //        registerAgree: true
-    //    })
-    //}
+    componentDidMount() {
+        if (this.state.loggedIn) {
+            this.props.history.push('/')
+        }
+    }
 
     checkAvailableSubmitForm() {
         const { fio, email, password, repassword, phone, passport_s, passport_n } = this.state
