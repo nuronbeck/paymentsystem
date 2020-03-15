@@ -9,7 +9,7 @@ using PaymentSystem.Models;
 
 namespace PaymentSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("payment")]
     [ApiController]
     public class paymentsController : ControllerBase
     {
@@ -73,17 +73,67 @@ namespace PaymentSystem.Controllers
             return NoContent();
         }
 
-        // POST: api/payments
+        // POST: payment/add
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<payment>> Postpayment(payment payment)
+        [Route("add")]
+        public async Task<ActionResult<payment>> Postpayment([FromBody] payment payment, [FromHeader] string api_token)
         {
-            _context.payment.Add(payment);
+            AuthController newAuth = new AuthController(_context);
+            var ActionResult = await newAuth.getId(api_token);
+            var OkObjectResult = ActionResult as OkObjectResult;
+
+            int status = 0;
+            string rejection_reason = null;
+
+            int UserId = (int)OkObjectResult.Value;
+            //при проведении платежа добавить его в истроию
+            //если на счету не хватает декнег отменяем платеж и меняем статус
+            //если хватает списываем деньги, добавляем деньги и меняем статус платежа
+            _context.payment.Add(payment);         
+            await _context.SaveChangesAsync();
+
+            if (_context.Acc.Any(x => x.id_acc == payment.sender_id && x.balance_acc >= payment.sum))
+            {
+                status = 1;
+                //Списать
+                var AccSenderBalanceUpdate = _context.Acc.Where(x => x.id_acc == payment.sender_id).ToList();
+                AccSenderBalanceUpdate[0].balance_acc -= payment.sum;
+                await _context.SaveChangesAsync();
+                //добавить
+                var AccRecipientBalanceUpdate = _context.Acc.Where(x => x.id_acc == payment.recipient_id).ToList();
+                AccRecipientBalanceUpdate[0].balance_acc += payment.sum;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                status = 2;
+                rejection_reason = "Недостаточно средств на счету!";
+            }
+
+            payment_historyController PaymentHistory = new payment_historyController(_context);
+            payment_history new_payment = new payment_history
+            {
+                payment_id = payment.id_payment,
+                status_payment_id = status,
+                date_check = DateTime.Now,
+                rejection = rejection_reason
+            };
+            await PaymentHistory.Postpayment_history(new_payment);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("Getpayment", new { id = payment.id_payment }, payment);
         }
+
+        [HttpGet]
+        [Route("history")]
+        public async Task<ActionResult<IEnumerable<payment_history>>> GetpaymentHistory()
+        {
+            payment_historyController PaymentHistory = new payment_historyController(_context);
+            return await PaymentHistory.Getpayment_history();
+        }
+
 
         // DELETE: api/payments/5
         [HttpDelete("{id}")]
