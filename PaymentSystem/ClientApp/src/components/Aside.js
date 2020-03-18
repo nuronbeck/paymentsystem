@@ -73,7 +73,7 @@ export class Aside extends Component {
                                 </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <NavLink to="/applications" className="nav-link" activeClassName="active">
+                                <NavLink to="/my-applications" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>Заявки</p>
                                 </NavLink>

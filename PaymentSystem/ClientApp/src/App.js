@@ -9,6 +9,8 @@ import { Logout } from './components/Logout';
 import { passwordRecovery } from './components/passwordRecovery';
 import './custom.css'
 import { BankAccountNumber } from './components/BankAccountNumber';
+import { Applications } from './components/Applications';
+import { newApplicationForm } from './components/forms/newApplicationForm';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -33,6 +35,8 @@ export default class App extends Component {
                     <Route path='/password-recovery' component={passwordRecovery} />
                     <Route path='/logout' component={Logout} />
                     <Route path='/bank-account' component={BankAccountNumber} />
+                    <Route path='/my-applications' component={Applications} />
+                    <Route path='/new-application' component={newApplicationForm} />
                 </Layout>
             )
         }
