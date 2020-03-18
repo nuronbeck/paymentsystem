@@ -170,7 +170,7 @@ namespace PaymentSystem.Controllers
         {
             int id = getIdFromToken(token);
             var client = await _context.client.FindAsync(id);
-            if (client==null)
+            if (client == null)
             {
                 return NotFound("Такого пользователя нет в бд");
             }
