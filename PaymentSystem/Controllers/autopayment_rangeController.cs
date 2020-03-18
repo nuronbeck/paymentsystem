@@ -9,7 +9,7 @@ using PaymentSystem.Models;
 
 namespace PaymentSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("autopayment_range")]
     [ApiController]
     public class autopayment_rangeController : ControllerBase
     {
