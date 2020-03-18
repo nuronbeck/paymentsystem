@@ -8,6 +8,7 @@ import { signIn } from './components/signIn';
 import { Logout } from './components/Logout';
 import { passwordRecovery } from './components/passwordRecovery';
 import './custom.css'
+import { BankAccountNumber } from './components/BankAccountNumber';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -31,6 +32,7 @@ export default class App extends Component {
                     <Route path='/sign-in' component={signIn} />
                     <Route path='/password-recovery' component={passwordRecovery} />
                     <Route path='/logout' component={Logout} />
+                    <Route path='/bank-account' component={BankAccountNumber} />
                 </Layout>
             )
         }

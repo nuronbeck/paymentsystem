@@ -28,10 +28,6 @@ export class Home extends Component {
         }) 
     }
 
-    componentDidUpdate() {
-        console.log(this.state.user)
-    }
-
     render() {
         return (
             <div class="content-wrapper" style={{ minHeight: '846.563px'}}> 

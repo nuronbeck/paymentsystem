@@ -67,34 +67,34 @@ export class Aside extends Component {
                             </li>
                             <li className={this.state.loggedIn ? "nav-header" : "d-none"}>Разделы</li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <Link to="/" class="nav-link">
+                                <NavLink to="/bank-account" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-credit-card"></i>
                                     <p>Мои счёта</p>
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <Link to="/" class="nav-link">
+                                <NavLink to="/applications" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>Заявки</p>
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <Link to="/" class="nav-link">
+                                <NavLink to="/payments" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-donate"></i>
                                     <p>Платёжи</p>
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <Link to="/" class="nav-link">
+                                <NavLink to="/autopayments" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-hand-holding-usd"></i>
                                     <p>Автоплатёжи</p>
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
-                                <Link to="/" class="nav-link">
+                                <NavLink to="/history" className="nav-link" activeClassName="active">
                                     <i class="nav-icon fas fa-landmark"></i>
                                     <p>Истории</p>
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className={this.state.loggedIn ? "nav-header" : "d-none"}>Сеанс</li>
                             <li className={this.state.loggedIn ? "nav-item" : "d-none"}>
