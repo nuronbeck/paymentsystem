@@ -30,10 +30,9 @@ export class signIn extends Component {
 
     componentDidMount() {
         this.setState({
-            email: 'next_nurbek@mail.ru',
-            password: 'Ab1234567890'
+            email: 'amir@gmail.com',
+            password: '123'
         })
-        console.clear()
 
         if (this.state.loggedIn) {
             this.props.history.push('/')

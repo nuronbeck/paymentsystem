@@ -23,15 +23,54 @@ export class Applications extends Component {
         if (user == null) {
             this.state.loggedIn = false 
         }
+
+        this.fetchUserApplicationsData = this.fetchUserApplicationsData.bind(this)
+        this.fetchUserIdData = this.fetchUserIdData.bind(this)
          
     }
-    
-	    
 
+    async fetchUserIdData() {
+        var rctObj = this
+        await fetch('api/Auth/getId?token=' + localStorage.getItem('access_token'), {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'api_token': localStorage.getItem('access_token')
+            }
+        })
+        .then(res => { if (res.status === 200) { return res.json() } })
+        .then(data => { if (data) { rctObj.setState({ userId: data }) } })
+
+        //console.log(this.state.userInfo)
+    } 
+
+    async fetchUserApplicationsData() {
+        var rctObj = this
+        await fetch('/applications', {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'api_token': localStorage.getItem('access_token')
+            }
+        })
+        .then(res => {  return res.json() })
+        .then(data => {
+            //console.log(data)
+            if (data) {
+                rctObj.setState({
+                    isLoading: false,
+                    userApplications: data.filter((appl) => { return appl.client_id == rctObj.state.userId})
+                })
+            } 
+        }) 
+    }
 
 
     componentDidMount() { 
-        this.setState({ isLoading: false })       
+        var rct = this
+        rct.fetchUserIdData().then(() => {  rct.fetchUserApplicationsData() }) 
     }
 
     componentWillMount() {
@@ -43,6 +82,8 @@ export class Applications extends Component {
     }
 
     render() {
+        const { userApplications } = this.state
+
         return this.state.isLoading ? <LoaderSpinner /> : (
             <div class="content-wrapper" style={{ minHeight: '846.563px'}}> 
                 <section class="content-header">
@@ -94,14 +135,16 @@ export class Applications extends Component {
                                 </tr>
                                 </thead>
                                 <tbody>
+                            {userApplications.map(userApp => 
                                 <tr>
-                                    <td>183</td>
-                                    <td>John Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="tag tag-success">Approved</span></td>
-                                    <td>Bacon ipsum do .</td>
+                                    <td>{userApp.id_request}</td>
+                                    <td>{userApp.client_.fio}</td>
+                                    <td>{userApp.income}</td>
+                                    <td>{userApp.place_job}</td>
+                                    <td><span class="tag tag-success">{userApp.status_request_.name}</span></td>
+                                    <td>{userApp.type_acc_.name}</td>
                                 </tr>
+                            )}
                                 </tbody>
                             </table>
                             </div> 
