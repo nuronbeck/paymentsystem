@@ -10,6 +10,7 @@ using PaymentSystem.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using AutoPaymentServiceN;
 
 namespace PaymentSystem
 {
@@ -28,9 +29,9 @@ namespace PaymentSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<paymentsystemContext>(options =>
             options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
+            services.AddHostedService<AutoPaymentService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
