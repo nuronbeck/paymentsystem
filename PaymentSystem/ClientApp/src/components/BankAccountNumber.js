@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { LoaderSpinner } from './ui/pageLoaderSpinner'
 
 export class BankAccountNumber extends Component {
     static displayName = BankAccountNumber.name;
@@ -9,6 +10,7 @@ export class BankAccountNumber extends Component {
         let loggedIn = true
 
         this.state = {
+            isLoading: true,
             loggedIn,
             user: [],
             userBankAccounts: [],
@@ -57,12 +59,13 @@ export class BankAccountNumber extends Component {
             //console.log(data)
             if (data) {
                 rctObj.setState({
+                    isLoading: false,
                     userBankAccounts: data
                 })
             } 
         })
 
-        //console.log(this.state.userBankAccounts)
+        console.log(this.state.userBankAccounts)
     }
 
     async showCardInsideClick(id_acc) {
@@ -79,8 +82,8 @@ export class BankAccountNumber extends Component {
     render() {
         const { userBankAccounts, showCardData } = this.state
 
-        return (
-            <div class="content-wrapper" style={{ minHeight: '846.563px' }}> 
+        return this.state.isLoading ? <LoaderSpinner/>  : (
+            <div class="content-wrapper"> 
                 <section class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
@@ -96,7 +99,7 @@ export class BankAccountNumber extends Component {
                         </div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <button type="button" class="float-right col-5 col-sm-4 col-lg-2 col-md-3 btn btn-block btn-info btn-sm">Создать новый</button>
+                                <button type="button" class="float-right col-5 col-sm-4 col-lg-2 col-md-3 btn btn-block btn-success btn-sm" onClick={() => this.props.history.push('/new-application') }>Создать новую</button>
                             </div> 
                         </div>
                     </div> 
@@ -186,6 +189,6 @@ export class BankAccountNumber extends Component {
                     </div>
                 </section>
             </div> 
-    );
+        );
   }
 }
