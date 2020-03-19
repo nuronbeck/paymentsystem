@@ -11,6 +11,9 @@ import './custom.css'
 import { BankAccountNumber } from './components/BankAccountNumber';
 import { Applications } from './components/Applications';
 import { newApplicationForm } from './components/forms/newApplicationForm';
+import { Payments } from './components/Payments';
+import { PaymentHistory } from './components/PaymentHistory';
+import { AutoPayments } from './components/AutoPayments';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -37,6 +40,9 @@ export default class App extends Component {
                     <Route path='/bank-account' component={BankAccountNumber} />
                     <Route path='/my-applications' component={Applications} />
                     <Route path='/new-application' component={newApplicationForm} />
+                    <Route path='/payments' component={Payments} />
+                    <Route path='/autopayments' component={AutoPayments} />
+                    <Route path='/payments-history' component={PaymentHistory} />
                 </Layout>
             )
         }

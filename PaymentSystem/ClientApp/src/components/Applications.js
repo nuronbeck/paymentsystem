@@ -47,7 +47,7 @@ export class Applications extends Component {
 
     async fetchUserApplicationsData() {
         var rctObj = this
-        await fetch('/applications', {
+        await fetch('/applications', { // ВСЕ БЕРУ ТАК КАК НЕТУ ОТДЕЛЬНОЙ И ЗА ЭТО ДОЛГО ГРУЗИТ
             method: 'get',
             headers: {
                 'Accept': 'application/json',

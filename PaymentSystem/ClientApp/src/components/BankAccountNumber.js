@@ -161,8 +161,8 @@ export class BankAccountNumber extends Component {
                                         <br/>
                                         <b>Дата создания:</b> {new Intl.DateTimeFormat('en-GB', { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(bankAccs.date_open_acc)).replace(/\//g, '/')}<br />
                                         <b>Дата истечения:</b> {new Intl.DateTimeFormat('en-GB', { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(bankAccs.date_close_acc)).replace(/\//g, '/')}<br />
-                                        <b>Payment Due:</b> 2/22/2014<br/>
-                                        <b>Account:</b> 968-34567
+                                        <b></b> -<br/>
+                                        <b></b> -
                                     </div>
                                     <div class="col-sm-4 invoice-col">
                                         <strong>Условия кредитования:</strong> {showCardData.length == 0 ? 'нет' : ''}
